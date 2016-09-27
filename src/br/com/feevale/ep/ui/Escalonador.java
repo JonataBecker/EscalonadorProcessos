@@ -15,7 +15,7 @@ public class Escalonador extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         initComponents();
-        stage.setTitle("Escacolador de processos - Round Robin");
+        stage.setTitle("Escalonador de processos - Round Robin");
         stage.setMaximized(true);
         stage.setScene(new Scene(pane));
         stage.show();

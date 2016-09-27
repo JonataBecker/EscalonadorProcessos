@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 public class ViewProcessos extends FlowPane {
 
     public ViewProcessos() {
-        setStyle("-fx-background-color:#000");
+        setStyle("-fx-background-color:#FFF; -fx-border-color: #CCC");
         setPadding(new Insets(5));
         initComponents();
     }

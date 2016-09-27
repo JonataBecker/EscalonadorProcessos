@@ -28,8 +28,8 @@ public class Fila {
     /**
      * Adiciona novo processo na lista
      */
-    public void adicionaProcesso() {
-        processos.add(new Processo(10));
+    public void adicionaProcesso(Processo processo) {
+        processos.add(processo);
     }
 
     /**
@@ -38,7 +38,7 @@ public class Fila {
      * @return {@code List<Processo>}
      */
     public List<Processo> getProcessos() {
-        return Collections.unmodifiableList(processos);
+        return new ArrayList<>(processos);
     }
 
 }

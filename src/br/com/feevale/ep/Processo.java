@@ -42,4 +42,11 @@ public class Processo {
     public ProcessoEstado getEstado() {
         return estado;
     }
+
+    @Override
+    public String toString() {
+        return "Processo{" + "vida=" + vida + ", vidaRestante=" + vidaRestante + ", estado=" + estado + '}';
+    }
+    
+    
 }

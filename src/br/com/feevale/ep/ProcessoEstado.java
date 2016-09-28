@@ -5,7 +5,8 @@ package br.com.feevale.ep;
  */
 public enum ProcessoEstado {
 
+    AGUARDANDO,
     PROCESSANDO,
-    PARADO,
+    FINALIZADO,
     IO;
 }

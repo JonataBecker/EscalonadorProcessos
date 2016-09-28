@@ -2,6 +2,7 @@ package br.com.feevale.ep.ui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -18,6 +19,7 @@ public class Escalonador extends Application {
         stage.setTitle("Escalonador de processos - Round Robin");
         stage.setMaximized(true);
         stage.setScene(new Scene(pane));
+        stage.getIcons().add(new Image(Escalonador.class.getResourceAsStream("/br/com/feevale/ep/res/icone.png")));
         stage.show();
     }
 

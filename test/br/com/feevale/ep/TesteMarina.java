@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class TesteMarina {
 
     public static void main(String[] args) {
-        Fila fila = new Fila(1, 10, 100);
+        Fila fila = new Fila(1, 10, 100, 240, 0.7);
 
         Thread t = new Thread(() -> {
             while (true) {

@@ -19,9 +19,9 @@ public class CriacaoProcessoThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            fila.adicionaProcesso(ProcessoFactory.cria());
+            fila.adicionaProcesso(ProcessoFactory.cria(fila));
             try {
-                Thread.sleep(10000);
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(CriacaoProcessoThread.class.getName()).log(Level.SEVERE, null, ex);
             }

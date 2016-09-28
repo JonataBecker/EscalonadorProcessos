@@ -11,9 +11,13 @@ public class Processo {
     private int vidaRestante;
     /** Estado do processo */
     private ProcessoEstado estado;
+    /** Indica se é I/O-bound */
+    private final boolean ioBound;
 
-    public Processo(int vida) {
+    public Processo(int vida, boolean ioBound) {
         this.vida = vida;
+        this.ioBound = ioBound;
+        estado = ProcessoEstado.AGUARDANDO;
     }
 
     /**
@@ -45,8 +49,10 @@ public class Processo {
 
     @Override
     public String toString() {
-        return "Processo{" + "vida=" + vida + ", vidaRestante=" + vidaRestante + ", estado=" + estado + '}';
+        return "Processo{" + "vida=" + vida + ", vidaRestante=" + vidaRestante + ", estado=" + estado + ", ioBound=" + ioBound + '}';
     }
+
+
     
     
 }

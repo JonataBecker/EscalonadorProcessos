@@ -1,5 +1,6 @@
 package br.com.feevale.ep.ui;
 
+import br.com.feevale.ep.Processo;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -9,7 +10,11 @@ import javafx.scene.layout.Pane;
  */
 public class ViewProcesso extends BorderPane {
 
-    public ViewProcesso() {
+    /** Dados do processo */
+    private final Processo processo;
+    
+    public ViewProcesso(Processo processo) {
+        this.processo = processo;
         setPrefSize(150, 100);
         setStyle("-fx-border-color: #CCC");
         initComponents();

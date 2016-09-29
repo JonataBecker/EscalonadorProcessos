@@ -1,5 +1,6 @@
 package br.com.feevale.ep.ui;
 
+import br.com.feevale.ep.Escalonador;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -12,6 +13,8 @@ import javafx.scene.layout.GridPane;
  */
 public class ViewInformacao extends GridPane {
 
+    /** Controlador do escalonador de processo */
+    private final Escalonador escalonador;
     /** Quantum */
     private TextField quantum;
     /** Tempo de vida máximo */
@@ -21,9 +24,11 @@ public class ViewInformacao extends GridPane {
     /** Contador de linha */
     private int line;
 
-    public ViewInformacao() {
+    public ViewInformacao(Escalonador escalonador) {
+        this.escalonador = escalonador;
         setPrefWidth(300);
         initComponents();
+        escalonador.start();
     }
 
     /**

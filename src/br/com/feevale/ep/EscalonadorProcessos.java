@@ -1,6 +1,6 @@
 package br.com.feevale.ep;
 
-import br.com.feevale.ep.ui.Escalonador;
+import br.com.feevale.ep.ui.ViewEscalonador;
 
 /**
  * Escalonador de processos Round Robin
@@ -8,7 +8,7 @@ import br.com.feevale.ep.ui.Escalonador;
 public class EscalonadorProcessos {
 
     public static void main(String[] args) {
-        Escalonador.run(args);
+        ViewEscalonador.run(args);
     }
     
 }

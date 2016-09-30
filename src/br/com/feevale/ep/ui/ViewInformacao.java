@@ -4,6 +4,7 @@ import br.com.feevale.ep.Escalonador;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
@@ -59,6 +60,18 @@ public class ViewInformacao extends GridPane {
         quantidadeMaximaProcessos.setTooltip(new Tooltip("Quantidade máxima de novos processos por minuto"));
         addNode(labelQuantidadeMaximaProcessos);
         addNode(quantidadeMaximaProcessos);
+        // Probabilidade I/O
+        Label labelProbabilidadeIO = new Label("Probabilidade I/O:");
+        Slider probabilidade = new Slider(0, 1, 0.5);
+        probabilidade.setShowTickLabels(true);
+        probabilidade.setShowTickMarks(true);
+        probabilidade.setMajorTickUnit(0.1);
+        probabilidade.setMinorTickCount(1);
+        probabilidade.setBlockIncrement(0.05);
+        probabilidade.setSnapToTicks(true);
+        probabilidade.setTooltip(new Tooltip("Probabilidade de um novo processo ser I/O bound"));
+        addNode(labelProbabilidadeIO);
+        addNode(probabilidade);
     }
 
     /**

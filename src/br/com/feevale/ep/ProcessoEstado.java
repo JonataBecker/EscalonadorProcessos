@@ -9,6 +9,7 @@ public enum ProcessoEstado {
     PROCESSANDO("#73C3EC", "Processando"),
     FINALIZADO("#F0585D", "Finalizado"),
     IO("#F6AF5C", "Em I/O");
+    
     /** Cor definida para o estado do processo */
     private final String cor;
     /** Nome do status do processo */

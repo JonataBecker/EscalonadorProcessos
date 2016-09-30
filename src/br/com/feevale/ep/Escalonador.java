@@ -21,12 +21,14 @@ public class Escalonador {
      * Inicia escalonamento
      */
     public void start() {
-        fila = new Fila(1, 10, 100, 240, 0.7);
+        fila = new Fila(1000, 10000, 240, 0.7);
         observable.forEach((obj) -> {
             obj.start(fila);
         });
         Thread ct = new CriacaoProcessoThread(fila);
         ct.start();
+        Thread escalonador = new EscalonamentoThread(fila);
+        escalonador.start();
     }
 
     /**

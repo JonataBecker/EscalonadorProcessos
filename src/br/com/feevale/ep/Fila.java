@@ -9,40 +9,40 @@ import java.util.List;
 public class Fila {
 
     /** Eventos de adição de processos */
-    private final List<FilaAddProcessListner> observable;
+    private final List<ProcessoListner> observable;
     /** Lista de processos */
     private final List<Processo> processos;
-    /** Ocorrência do processo atual */
-    private final int ocorrenciaProcesso;
     /** Unidade quantum */
     private final int quantum;
     /** Tempo de vida máximo */
     private final int tempoVida;
+    /** Ocorrência do processo atual */
+    private int ocorrenciaProcesso;
     /** Quantidade de processos novos por minuto */
     private int quantidadeProcessos;
     /** Probabilidade do processo ser I/O-bound */
     private double probabilidadeIO;
-    
-    public Fila(int ocorrenciaProcesso, int quantum, int tempoVida, 
+
+    public Fila(int quantum, int tempoVida,
             int quantidadeProcessos, double probabilidadeIO) {
         this.observable = new ArrayList<>();
         this.processos = new ArrayList<>();
-        this.ocorrenciaProcesso = ocorrenciaProcesso;
         this.quantum = quantum;
         this.tempoVida = tempoVida;
+        this.ocorrenciaProcesso = -1;
         this.quantidadeProcessos = quantidadeProcessos;
         this.probabilidadeIO = probabilidadeIO;
     }
 
     /**
      * Adiciona novo processo na lista
-     * 
-     * @param processo 
+     *
+     * @param processo
      */
     public void adicionaProcesso(Processo processo) {
         processos.add(processo);
         observable.forEach((obj) -> {
-            obj.add(processo);
+            obj.process(processo);
         });
     }
 
@@ -54,10 +54,19 @@ public class Fila {
     public List<Processo> getProcessos() {
         return new ArrayList<>(processos);
     }
+
+    /**
+     * Retorna a unidade quantum
+     * 
+     * @return int
+     */
+    public int getQuantum() {
+        return quantum;
+    }
     
     /**
      * Retorna o tempo de vida
-     * 
+     *
      * @return int
      */
     public int getTempoVida() {
@@ -66,7 +75,7 @@ public class Fila {
 
     /**
      * Retorna a quantidade de processos
-     * 
+     *
      * @return int
      */
     public int getQuantidadeProcessos() {
@@ -75,20 +84,36 @@ public class Fila {
 
     /**
      * Retorna a probabilidade de IO
-     * 
+     *
      * @return double
      */
     public double getProbabilidadeIO() {
         return probabilidadeIO;
     }
-    
+
     /**
      * Adiciona evento de adição de processo
-     * 
-     * @param observer 
+     *
+     * @param observer
      */
-    public void onAddProcess(FilaAddProcessListner observer) {
+    public void onAddProcess(ProcessoListner observer) {
         observable.add(observer);
+    }
+
+    /**
+     * Retorna próximo processo da fila
+     *
+     * @return Processo
+     */
+    public Processo getNextProcesso() {
+        if (processos.isEmpty()) {
+            return null;
+        }
+        ocorrenciaProcesso++;
+        if (ocorrenciaProcesso == processos.size()) {
+            ocorrenciaProcesso = 0;
+        }
+        return processos.get(ocorrenciaProcesso);
     }
 
 }

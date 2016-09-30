@@ -1,7 +1,6 @@
 package br.com.feevale.ep.ui;
 
 import br.com.feevale.ep.Processo;
-import br.com.feevale.ep.ProcessoEstado;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -13,36 +12,55 @@ public class ViewProcesso extends BorderPane {
 
     /** Dados do processo */
     private final Processo processo;
+    /** Detalhe do processo */
+    private Pane pane;
+    /** Barra de progresso */
+    private ProgressBar bar;
     
     public ViewProcesso(Processo processo) {
         this.processo = processo;
         setPrefSize(150, 100);
         setStyle("-fx-border-color: #CCC");
         initComponents();
+        initListners();
+        setCor();
+        setBarra();
     }
 
     /**
      * Inicializa componentes
      */
     private void initComponents() {
-        Pane pane = new Pane();
-        pane.setStyle("-fx-background-color: " + getProcessColor());
+        pane = new Pane();
         setCenter(pane);
-        ProgressBar bar = new ProgressBar();
+        bar = new ProgressBar();
         bar.setStyle("-fx-accent: #708090");
-        bar.setProgress(Math.random());
         bar.setPrefWidth(150);
         setBottom(bar);
     }
 
     /**
-     * Retorna a cor do processo
-     *
-     * @return String
+     * Inicializa eventos
      */
-    private String getProcessColor() {
-        ProcessoEstado processoEstado = ProcessoEstado.values()[(int) (Math.random() * 4)];
-        return processoEstado.getCor();
+    private void initListners() {
+        processo.onChangeStatus((obj)-> {
+            setBarra();
+            setCor();
+        });
+    }
+    
+    /**
+     * Define a cor do processo
+     */
+    private void setCor() {        
+        pane.setStyle("-fx-background-color: " + processo.getEstado().getCor());
+    }
+    
+    /**
+     * Define a cor do processo
+     */
+    private void setBarra() {
+        bar.setProgress((double)processo.getTempoProcessamento() / processo.getVida());
     }
 
 }

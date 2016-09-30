@@ -3,13 +3,13 @@ package br.com.feevale.ep;
 /**
  * Evento de adição de processos
  */
-public interface FilaAddProcessListner {
+public interface ProcessoListner {
     
     /**
      * Adição de processo
      * 
      * @param processo 
      */
-    public void add(Processo processo);
+    public void process(Processo processo);
     
 }

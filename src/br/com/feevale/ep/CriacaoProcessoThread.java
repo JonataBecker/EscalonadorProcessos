@@ -7,6 +7,7 @@ import java.util.logging.Logger;
  * Thread de criação de processos
  */
 public class CriacaoProcessoThread extends Thread {
+    
     /** Fila para criação de processos */
     private final Fila fila;
 
@@ -14,7 +15,6 @@ public class CriacaoProcessoThread extends Thread {
         this.fila = fila;
         setDaemon(true);
     }
-    
     
     @Override
     public void run() {

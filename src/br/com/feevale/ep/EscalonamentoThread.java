@@ -39,20 +39,22 @@ public class EscalonamentoThread extends Thread {
             try {
                 int tempo = 0;
                 Processo processo = getNext();
-                processo.inicia();
-                while (true) {
-                    Thread.sleep(TEMPO_PROCESSAMENTO);
-                    tempo += TEMPO_PROCESSAMENTO;
-                    processo.executa(TEMPO_PROCESSAMENTO);
-                    // Se processo esta completo
-                    if (processo.isCompleto()) {
-                        processo.finaliza();
-                        break;
-                    }
-                    // Se finalizou quantum
-                    if (tempo >= fila.getQuantum()) {
-                        processo.aguarda();
-                        break;
+                if (!processo.isCompleto()) {
+                    processo.inicia();
+                    while (true) {
+                        Thread.sleep(TEMPO_PROCESSAMENTO);
+                        tempo += TEMPO_PROCESSAMENTO;
+                        processo.executa(TEMPO_PROCESSAMENTO);
+                        // Se processo esta completo
+                        if (processo.isCompleto()) {
+                            processo.finaliza();
+                            break;
+                        }
+                        // Se finalizou quantum
+                        if (tempo >= fila.getQuantum()) {
+                            processo.aguarda();
+                            break;
+                        }
                     }
                 }
             } catch (InterruptedException ex) {

@@ -103,7 +103,7 @@ public class Processo {
      * Executa encerramento do processo
      */
     public void finaliza() {
-        estado = ProcessoEstado.FINALIZADO;
+        setEstado(ProcessoEstado.FINALIZADO);
         observableClose.forEach((obj) -> {
             obj.process(this);
         });

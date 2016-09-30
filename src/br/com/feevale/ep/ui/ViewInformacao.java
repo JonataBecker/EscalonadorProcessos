@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
@@ -38,16 +39,19 @@ public class ViewInformacao extends GridPane {
         // Quantum
         Label labelQuantum = new Label("Quantum:");
         quantum = new TextField();
+        quantum.setTooltip(new Tooltip("Intervalo de tempo para execução do processo"));
         addNode(labelQuantum);
         addNode(quantum);
         // Tempo de vida máximo
         Label labelTempoVida = new Label("Tempo de vida máximo:");
         tempoVida = new TextField();
+        tempoVida.setTooltip(new Tooltip("Tempo de vida máximo do processo"));
         addNode(labelTempoVida);
         addNode(tempoVida);
         // Tempo de vida máximo
         Label labelQuantidadeMaximaProcessos = new Label("Quantidade máxima de processos:");
         quantidadeMaximaProcessos = new TextField();
+        quantidadeMaximaProcessos.setTooltip(new Tooltip("Quantidade máxima de novos processos por minuto"));
         addNode(labelQuantidadeMaximaProcessos);
         addNode(quantidadeMaximaProcessos);
     }

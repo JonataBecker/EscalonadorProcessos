@@ -1,5 +1,6 @@
 package br.com.feevale.ep.ui;
 
+import br.com.feevale.ep.ProcessoEstado;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -17,12 +18,13 @@ public class ViewProcesso extends BorderPane {
 
     /**
      * Inicializa componentes
-     */    
+     */
     private void initComponents() {
         Pane pane = new Pane();
         pane.setStyle("-fx-background-color: " + getProcessColor());
         setCenter(pane);
         ProgressBar bar = new ProgressBar();
+        bar.setStyle("-fx-accent: #708090");
         bar.setProgress(Math.random());
         bar.setPrefWidth(150);
         setBottom(bar);
@@ -34,13 +36,18 @@ public class ViewProcesso extends BorderPane {
      * @return String
      */
     private String getProcessColor() {
-        double rand = Math.random() * 100;
-        if (rand < 33) {
-            return "#F5F5F5";
-        } else if (rand < 66) {
-            return "#DCEDC8";
+        ProcessoEstado processoEstado = ProcessoEstado.values()[(int) (Math.random() * 4)];
+        switch (processoEstado) {
+            case AGUARDANDO:
+                return "#1CD781";
+            case PROCESSANDO:
+                return "#73C3EC";
+            case IO:
+                return "#F6AF5C";
+            case FINALIZADO:
+            default:
+                return "#F0585D";
         }
-        return "#F0F4C3";
     }
 
 }

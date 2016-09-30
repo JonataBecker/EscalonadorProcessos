@@ -1,8 +1,7 @@
 package br.com.feevale.ep;
 
 /**
- *
- * @author Marina
+ * Classe responsável pela criação do processo
  */
 public class ProcessoFactory {
     /**

@@ -4,11 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Marina
+ * Thread de criação de processos
  */
 public class CriacaoProcessoThread extends Thread {
-    
+    /** Fila para criação de processos */
     private final Fila fila;
 
     public CriacaoProcessoThread(Fila fila) {

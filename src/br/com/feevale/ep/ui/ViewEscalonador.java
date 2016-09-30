@@ -2,6 +2,7 @@ package br.com.feevale.ep.ui;
 
 import br.com.feevale.ep.Escalonador;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -14,6 +15,7 @@ public class ViewEscalonador extends Application {
 
     private final Escalonador escalonador;
     private BorderPane pane;
+    private BorderPane paneInfo;
 
     public ViewEscalonador() {
         this.escalonador = new Escalonador();
@@ -34,13 +36,24 @@ public class ViewEscalonador extends Application {
      */
     private void initComponents() {
         pane = new BorderPane();
-        pane.setMinSize(960, 800);
+        pane.setMinSize(960, 600);
         pane.setCenter(new ViewProcessos(escalonador));
-        pane.setRight(new ViewInformacao(escalonador));
+        pane.setRight(buildPanelLateral());
     }
 
     public static void run(String[] args) {
         launch(args);
+    }
+
+    /**
+     * Cria painel lateral com informações do escalonador
+     * @return paneInfo
+     */
+    private Node buildPanelLateral() {
+        paneInfo = new BorderPane();
+        paneInfo.setCenter(new ViewInformacao(escalonador));
+        paneInfo.setBottom(new ViewLegendaCores());
+        return paneInfo;
     }
 
 }

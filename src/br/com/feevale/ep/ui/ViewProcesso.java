@@ -42,17 +42,7 @@ public class ViewProcesso extends BorderPane {
      */
     private String getProcessColor() {
         ProcessoEstado processoEstado = ProcessoEstado.values()[(int) (Math.random() * 4)];
-        switch (processoEstado) {
-            case AGUARDANDO:
-                return "#1CD781";
-            case PROCESSANDO:
-                return "#73C3EC";
-            case IO:
-                return "#F6AF5C";
-            case FINALIZADO:
-            default:
-                return "#F0585D";
-        }
+        return processoEstado.getCor();
     }
 
 }

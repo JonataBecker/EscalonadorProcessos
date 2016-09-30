@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Escalonador {
 
-    /** Lista de evetos de inicio de escalonamento */
+    /** Lista de eventos de inicio de escalonamento */
     private final List<EscalonadorStartListner> observable;
     /** Objeto responsável pelo controle da fila de escalonamento */
     private Fila fila;

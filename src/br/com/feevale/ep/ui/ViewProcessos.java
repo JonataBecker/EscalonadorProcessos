@@ -1,5 +1,7 @@
 package br.com.feevale.ep.ui;
 
+import br.com.feevale.ep.Escalonador;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -10,21 +12,29 @@ import javafx.scene.layout.Pane;
  */
 public class ViewProcessos extends FlowPane {
 
-    public ViewProcessos() {
+    /** Controlador do escalonador de processo */
+    private final Escalonador escalonador;
+
+    public ViewProcessos(Escalonador escalonador) {
+        this.escalonador = escalonador;
         setStyle("-fx-background-color:#FFF; -fx-border-color: #CCC");
         setPadding(new Insets(5));
-        initComponents();
+        initListners();
     }
 
     /**
      * Inicializa componentes
      */
-    private void initComponents() {
-        for (int i = 0; i < 20; i++) {
-            Pane pane = new BorderPane(new ViewProcesso());
-            pane.setPadding(new Insets(5));
-            getChildren().add(pane);
-        }
+    private void initListners() {
+        escalonador.onStart((fila) -> {
+            fila.onAddProcess((processo) -> {
+                Platform.runLater(() -> {
+                    Pane pane = new BorderPane(new ViewProcesso(processo));
+                    pane.setPadding(new Insets(5));
+                    getChildren().add(pane);
+                });
+            });
+        });
     }
 
 }

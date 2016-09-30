@@ -13,6 +13,7 @@ public class CriacaoProcessoThread extends Thread {
 
     public CriacaoProcessoThread(Fila fila) {
         this.fila = fila;
+        setDaemon(true);
     }
     
     

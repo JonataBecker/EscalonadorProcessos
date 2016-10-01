@@ -17,7 +17,7 @@ public class ViewProcessos extends FlowPane {
 
     public ViewProcessos(Escalonador escalonador) {
         this.escalonador = escalonador;
-        setStyle("-fx-background-color:#FFF; -fx-border-color: #CCC");
+        setStyle("-fx-background-color:#FFF");
         setPadding(new Insets(5));
         initListners();
     }

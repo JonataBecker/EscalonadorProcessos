@@ -15,6 +15,7 @@ public class EscalonamentoThread extends Thread {
 
     public EscalonamentoThread(Fila fila) {
         this.fila = fila;
+        setDaemon(true);
     }
 
     /**
@@ -29,7 +30,7 @@ public class EscalonamentoThread extends Thread {
             if (processo != null) {
                 return processo;
             }
-            Thread.sleep(TEMPO_PROCESSAMENTO);
+            Thread.sleep(10);
         }
     }
 

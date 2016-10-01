@@ -16,7 +16,7 @@ public class ViewProcesso extends BorderPane {
     private Pane pane;
     /** Barra de progresso */
     private ProgressBar bar;
-    
+
     public ViewProcesso(Processo processo) {
         this.processo = processo;
         setPrefSize(150, 100);
@@ -43,24 +43,24 @@ public class ViewProcesso extends BorderPane {
      * Inicializa eventos
      */
     private void initListners() {
-        processo.onChangeStatus((obj)-> {
+        processo.onChangeStatus((obj) -> {
             setBarra();
             setCor();
         });
     }
-    
+
     /**
      * Define a cor do processo
      */
-    private void setCor() {        
+    private void setCor() {
         pane.setStyle("-fx-background-color: " + processo.getEstado().getCor());
     }
-    
+
     /**
      * Define a cor do processo
      */
     private void setBarra() {
-        bar.setProgress((double)processo.getTempoProcessamento() / processo.getVida());
+        bar.setProgress((double) processo.getTempoProcessamento() / processo.getVida());
     }
 
 }

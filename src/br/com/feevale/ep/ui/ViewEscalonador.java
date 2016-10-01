@@ -4,6 +4,7 @@ import br.com.feevale.ep.Escalonador;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -36,8 +37,7 @@ public class ViewEscalonador extends Application {
      */
     private void initComponents() {
         pane = new BorderPane();
-        pane.setMinSize(960, 600);
-        pane.setCenter(new ViewProcessos(escalonador));
+        pane.setCenter(buildProcessPane());
         pane.setRight(buildPanelLateral());
     }
 
@@ -46,7 +46,21 @@ public class ViewEscalonador extends Application {
     }
 
     /**
+     * Criar painel de processos
+     * 
+     * @return Node
+     */
+    private Node buildProcessPane() {
+        ScrollPane scroll = new ScrollPane();
+        scroll.setContent(new ViewProcessos(escalonador));
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
+        return scroll;
+    }
+    
+    /**
      * Cria painel lateral com informações do escalonador
+     * 
      * @return paneInfo
      */
     private Node buildPanelLateral() {

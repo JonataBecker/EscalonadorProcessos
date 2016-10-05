@@ -12,7 +12,11 @@ public class Escalonador {
     private final List<EscalonadorStartListner> observable;
     /** Objeto responsável pelo controle da fila de escalonamento */
     private Fila fila;
-
+    /** Objeto responsável pela criação dos processos na fila */
+    private Thread ct;
+    /** Objeto responsável pelo escalonamento dos processos */
+    private Thread escalonador;
+    
     public Escalonador() {
         this.observable = new ArrayList<>();
     }
@@ -25,14 +29,14 @@ public class Escalonador {
         observable.forEach((obj) -> {
             obj.start(fila);
         });
-        Thread ct = new CriacaoProcessoThread(fila);
+        ct = new CriacaoProcessoThread(fila);
         ct.start();
-        Thread escalonador = new EscalonamentoThread(fila);
+        escalonador = new EscalonamentoThread(fila);
         escalonador.start();
     }
 
     /**
-     * Adiciona evento de incio de escalonamento
+     * Adiciona evento de início de escalonamento
      *
      * @param observer
      */
@@ -40,4 +44,11 @@ public class Escalonador {
         observable.add(observer);
     }
 
+    /**
+     * Interrompe o processamento das threads do escalonador
+     */
+    public void interrupt() {
+        ct.interrupt();
+        escalonador.interrupt();
+    }
 }

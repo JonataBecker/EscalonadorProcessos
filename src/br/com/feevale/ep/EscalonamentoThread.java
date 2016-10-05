@@ -1,20 +1,22 @@
 package br.com.feevale.ep;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Classe responsável pelo escalonamento de processos
  */
 public class EscalonamentoThread extends Thread {
 
-    /** Tempo de processamento */
+    /**
+     * Tempo de processamento
+     */
     private static final int TEMPO_PROCESSAMENTO = 100;
-    /** Fila de processos */
+    /**
+     * Fila de processos
+     */
     private final Fila fila;
 
     public EscalonamentoThread(Fila fila) {
         this.fila = fila;
+        setDaemon(true);
     }
 
     /**
@@ -35,8 +37,8 @@ public class EscalonamentoThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            try {
+        try {
+            while (true) {
                 int tempo = 0;
                 Processo processo = getNext();
                 if (!processo.isCompleto()) {
@@ -57,9 +59,8 @@ public class EscalonamentoThread extends Thread {
                         }
                     }
                 }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(EscalonamentoThread.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (InterruptedException ex) {
         }
     }
 

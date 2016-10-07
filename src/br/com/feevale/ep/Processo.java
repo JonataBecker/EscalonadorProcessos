@@ -9,9 +9,11 @@ import java.util.List;
 public class Processo {
 
     /** Eventos do processo */
-    private final List<ProcessoListner> observableStatus;
+    private final List<ProcessoListener> observableStatus;
     /** Eventos de encerramento do processo */
-    private final List<ProcessoListner> observableClose;
+    private final List<ProcessoListener> observableClose;
+    /** PDI */
+    private final int pdi;
     /** Vida total */
     private final int vida;
     /** Tempo de processamento */
@@ -21,14 +23,24 @@ public class Processo {
     /** Indica se é I/O-bound */
     private final boolean ioBound;
 
-    public Processo(int vida, boolean ioBound) {
+    public Processo(int pdi, int vida, boolean ioBound) {
         this.observableStatus = new ArrayList<>();
         this.observableClose = new ArrayList<>();
+        this.pdi = pdi;
         this.vida = vida;
         this.ioBound = ioBound;
         estado = ProcessoEstado.AGUARDANDO;
     }
 
+    /**
+     * Retorna o pdi do processo
+     * 
+     * @return int
+     */
+    public int getPdi() {
+        return pdi;
+    }
+    
     /**
      * Retorna a vida total do processo
      *
@@ -112,7 +124,7 @@ public class Processo {
     /**
      * Dispara eventos de troca de status
      */
-    private void fireStatusChange() {
+    public void fireStatusChange() {
         observableStatus.forEach((obj) -> {
             obj.process(this);
         });
@@ -123,7 +135,7 @@ public class Processo {
      *
      * @param observer
      */
-    public void onChangeStatus(ProcessoListner observer) {
+    public void onChangeStatus(ProcessoListener observer) {
         this.observableStatus.add(observer);
     }
 
@@ -132,7 +144,7 @@ public class Processo {
      *
      * @param observer
      */
-    public void onClose(ProcessoListner observer) {
+    public void onClose(ProcessoListener observer) {
         this.observableClose.add(observer);
     }
 

@@ -29,9 +29,9 @@ public class ViewProcessos extends FlowPane {
         escalonador.onStart((fila) -> {
             fila.onAddProcess((processo) -> {
                 Platform.runLater(() -> {
-                    Pane pane = new BorderPane(new ViewProcesso(processo));
+                    Pane pane = new BorderPane(new ViewProcesso(fila, processo));
                     pane.setPadding(new Insets(5));
-                    getChildren().add(pane);
+                    getChildren().add(fila.getProcessos().indexOf(processo), pane);
                 });
             });
         });

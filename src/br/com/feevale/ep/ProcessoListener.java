@@ -3,7 +3,7 @@ package br.com.feevale.ep;
 /**
  * Evento de adição de processos
  */
-public interface ProcessoListner {
+public interface ProcessoListener {
     
     /**
      * Adição de processo

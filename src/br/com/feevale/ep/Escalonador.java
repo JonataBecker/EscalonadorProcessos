@@ -9,7 +9,7 @@ import java.util.List;
 public class Escalonador {
 
     /** Lista de eventos de inicio de escalonamento */
-    private final List<EscalonadorStartListner> observable;
+    private final List<EscalonadorStartListener> observable;
     /** Objeto responsável pelo controle da fila de escalonamento */
     private Fila fila;
 
@@ -36,7 +36,7 @@ public class Escalonador {
      *
      * @param observer
      */
-    public void onStart(EscalonadorStartListner observer) {
+    public void onStart(EscalonadorStartListener observer) {
         observable.add(observer);
     }
 

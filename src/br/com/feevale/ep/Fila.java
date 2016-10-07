@@ -9,7 +9,7 @@ import java.util.List;
 public class Fila {
 
     /** Eventos de adição de processos */
-    private final List<ProcessoListner> observable;
+    private final List<ProcessoListener> observable;
     /** Lista de processos */
     private final List<Processo> processos;
     /** Unidade quantum */
@@ -40,9 +40,17 @@ public class Fila {
      * @param processo
      */
     public void adicionaProcesso(Processo processo) {
-        processos.add(processo);
+        if (ocorrenciaProcesso == -1) {
+            processos.add(processo);
+        } else {
+            processos.add(ocorrenciaProcesso, processo);
+        }
+        ocorrenciaProcesso++;
         observable.forEach((obj) -> {
             obj.process(processo);
+        });
+        processos.forEach((obj)-> {
+            obj.fireStatusChange();
         });
     }
 
@@ -96,7 +104,7 @@ public class Fila {
      *
      * @param observer
      */
-    public void onAddProcess(ProcessoListner observer) {
+    public void onAddProcess(ProcessoListener observer) {
         observable.add(observer);
     }
 

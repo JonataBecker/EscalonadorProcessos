@@ -51,11 +51,7 @@ public class ViewEscalonador extends Application {
      * @return Node
      */
     private Node buildProcessPane() {
-        ScrollPane scroll = new ScrollPane();
-        scroll.setContent(new ViewProcessos(escalonador));
-        scroll.setFitToWidth(true);
-        scroll.setFitToHeight(true);
-        return scroll;
+        return new ViewProcessos(escalonador);
     }
     
     /**

@@ -8,7 +8,8 @@ public interface EscalonadorStartListener {
     /**
      * Inicio do escalonamento
      * 
-     * @param fila 
+     * @param filaCPU  
+     * @param filaIO  
      */
-    public void start(Fila fila);
+    public void start(Fila filaCPU, Fila filaIO);
 }

@@ -35,7 +35,7 @@ public class Escalonador {
         filaCPU = new Fila();
         filaIO = new Fila();
         observable.forEach((obj) -> {
-            obj.start(filaCPU);
+            obj.start(filaCPU, filaIO);
         });
         ct = new CriacaoProcessoThread(filaCPU, tempoVida, maxProcessos, probabilidadeIO);
         ct.start();

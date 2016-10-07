@@ -1,8 +1,11 @@
 package br.com.feevale.ep.ui;
 
 import br.com.feevale.ep.Escalonador;
+import br.com.feevale.ep.utils.NumericField;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -15,22 +18,31 @@ import javafx.scene.layout.GridPane;
  */
 public class ViewInformacao extends GridPane {
 
-    /** Controlador do escalonador de processo */
+    /**
+     * Controlador do escalonador de processo
+     */
     private final Escalonador escalonador;
-    /** Quantum */
+    /**
+     * Quantum
+     */
     private TextField quantum;
-    /** Tempo de vida máximo */
+    /**
+     * Tempo de vida máximo
+     */
     private TextField tempoVida;
-    /** Quantidade máxima de processos por minuto */
+    /**
+     * Quantidade máxima de processos por minuto
+     */
     private TextField quantidadeMaximaProcessos;
-    /** Contador de linha */
+    /**
+     * Contador de linha
+     */
     private int line;
 
     public ViewInformacao(Escalonador escalonador) {
         this.escalonador = escalonador;
         setPrefWidth(300);
         initComponents();
-        escalonador.start();
     }
 
     /**
@@ -44,19 +56,19 @@ public class ViewInformacao extends GridPane {
         setVgap(5);
         // Quantum
         Label labelQuantum = new Label("Quantum:");
-        quantum = new TextField();
+        quantum = new NumericField();
         quantum.setTooltip(new Tooltip("Intervalo de tempo para execução do processo"));
         addNode(labelQuantum);
         addNode(quantum);
         // Tempo de vida máximo
         Label labelTempoVida = new Label("Tempo de vida máximo:");
-        tempoVida = new TextField();
+        tempoVida = new NumericField();
         tempoVida.setTooltip(new Tooltip("Tempo de vida máximo do processo"));
         addNode(labelTempoVida);
         addNode(tempoVida);
         // Tempo de vida máximo
         Label labelQuantidadeMaximaProcessos = new Label("Quantidade máxima de processos:");
-        quantidadeMaximaProcessos = new TextField();
+        quantidadeMaximaProcessos = new NumericField();
         quantidadeMaximaProcessos.setTooltip(new Tooltip("Quantidade máxima de novos processos por minuto"));
         addNode(labelQuantidadeMaximaProcessos);
         addNode(quantidadeMaximaProcessos);
@@ -72,6 +84,13 @@ public class ViewInformacao extends GridPane {
         probabilidade.setTooltip(new Tooltip("Probabilidade de um novo processo ser I/O bound"));
         addNode(labelProbabilidadeIO);
         addNode(probabilidade);
+        // Botão para iniciar ou parar a simulação
+        Button botaoSimulacao = new Button("Iniciar");
+        botaoSimulacao.setMinWidth(250);
+        botaoSimulacao.setOnAction((ActionEvent e) -> {
+            acaoBotaoSimulacao(botaoSimulacao);
+        });
+        addNode(botaoSimulacao);
     }
 
     /**
@@ -81,6 +100,20 @@ public class ViewInformacao extends GridPane {
      */
     private void addNode(Node node) {
         addRow(line++, node);
+    }
+
+    /**
+     * Trata ação de clique no botão de simulação
+     * @param botao 
+     */
+    private void acaoBotaoSimulacao(Button botao) {
+        if (botao.getText().equals("Iniciar")) {
+            botao.setText("Parar");
+            escalonador.start();
+        } else {
+            botao.setText("Iniciar");
+            escalonador.interrupt();
+        }
     }
 
 }

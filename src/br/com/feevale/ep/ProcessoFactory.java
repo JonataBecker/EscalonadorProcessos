@@ -14,7 +14,7 @@ public class ProcessoFactory {
      * @param probabilidadeIO 
      * @return Processo criado
      */
-    public static synchronized Processo cria(int tempoVida, int probabilidadeIO) {
+    public static synchronized Processo cria(int tempoVida, double probabilidadeIO) {
         int vida = (int) (Math.random() * tempoVida + 1);
         boolean ioBound = Math.random() < probabilidadeIO;
         return new Processo(lastPdi++, vida, ioBound);

@@ -50,6 +50,7 @@ public class Fila {
     public void adiciona(Processo processo) {
         if (processoAtivo == null) {
             processos.add(processo);
+            processoAtivo = processo;
         } else {
             processos.add(indexOf(processoAtivo), processo);
         }
@@ -106,7 +107,8 @@ public class Fila {
         if (ocorrenciaProcesso == processos.size()) {
             ocorrenciaProcesso = 0;
         }
-        processoAtivo = processos.get(ocorrenciaProcesso);
+        Processo process = processos.get(ocorrenciaProcesso);
+        processoAtivo = process.equals(processoAtivo) && processoAtivo.isCompleto() ? null : process;
     }
 
     /**

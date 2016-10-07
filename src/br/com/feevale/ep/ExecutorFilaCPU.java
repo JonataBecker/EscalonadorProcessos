@@ -17,7 +17,7 @@ public class ExecutorFilaCPU implements ExecutorFila {
 
     @Override
     public void inicia() throws ProcessoInexistenteException {
-        filaCPU.nextProcesso();
+//        filaCPU.nextProcesso();
         filaCPU.getProcessoAtivo().inicia();
     }
 
@@ -26,6 +26,7 @@ public class ExecutorFilaCPU implements ExecutorFila {
         Processo processo = filaCPU.getProcessoAtivo();
         if (!processo.isCompleto()) {
             filaCPU.getProcessoAtivo().aguarda();
+            filaCPU.nextProcesso();
         }
     }
 
@@ -35,6 +36,7 @@ public class ExecutorFilaCPU implements ExecutorFila {
         Processo processo = filaCPU.getProcessoAtivo();
         if (processo.isCompleto()) {
             processo.finaliza();
+            filaCPU.nextProcesso();
             filaCPU.remove(processo);
             throw new ProcessamentoInterrompidoException();
         }

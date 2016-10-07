@@ -25,4 +25,8 @@ public class NumericField extends TextField {
         }
     }
     
+    public int getValue() {
+        return Integer.valueOf(getText());
+    }
+    
 }

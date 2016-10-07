@@ -25,16 +25,21 @@ public class Escalonador {
 
     /**
      * Inicia escalonamento
+     * 
+     * @param quantum
+     * @param tempoVida
+     * @param maxProcessos
+     * @param probabilidadeIO
      */
-    public void start() {
+    public void start(int quantum, int tempoVida, int maxProcessos, double probabilidadeIO) {
         filaCPU = new Fila();
         filaIO = new Fila();
         observable.forEach((obj) -> {
             obj.start(filaCPU);
         });
-        ct = new CriacaoProcessoThread(filaCPU, 10000, 3);
+        ct = new CriacaoProcessoThread(filaCPU, tempoVida, maxProcessos, probabilidadeIO);
         ct.start();
-        escalonador = new EscalonamentoThread(new ExecutorFilaCPU(filaCPU, filaIO), 1000);
+        escalonador = new EscalonamentoThread(new ExecutorFilaCPU(filaCPU, filaIO), quantum);
         escalonador.start();
     }
 

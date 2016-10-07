@@ -12,46 +12,12 @@ public class Fila {
     private final List<ProcessoListener> observable;
     /** Lista de processos */
     private final List<Processo> processos;
-    /** Unidade quantum */
-    private final int quantum;
-    /** Tempo de vida máximo */
-    private final int tempoVida;
-    /** Ocorrência do processo atual */
-    private int ocorrenciaProcesso;
-    /** Quantidade de processos novos por minuto */
-    private int quantidadeProcessos;
-    /** Probabilidade do processo ser I/O-bound */
-    private double probabilidadeIO;
+    /** Identificador do processo atual */
+    private Processo processoAtivo;
 
-    public Fila(int quantum, int tempoVida,
-            int quantidadeProcessos, double probabilidadeIO) {
+    public Fila() {
         this.observable = new ArrayList<>();
         this.processos = new ArrayList<>();
-        this.quantum = quantum;
-        this.tempoVida = tempoVida;
-        this.ocorrenciaProcesso = -1;
-        this.quantidadeProcessos = quantidadeProcessos;
-        this.probabilidadeIO = probabilidadeIO;
-    }
-
-    /**
-     * Adiciona novo processo na lista
-     *
-     * @param processo
-     */
-    public void adicionaProcesso(Processo processo) {
-        if (ocorrenciaProcesso == -1) {
-            processos.add(processo);
-        } else {
-            processos.add(ocorrenciaProcesso, processo);
-        }
-        ocorrenciaProcesso++;
-        observable.forEach((obj) -> {
-            obj.process(processo);
-        });
-        processos.forEach((obj)-> {
-            obj.fireStatusChange();
-        });
     }
 
     /**
@@ -64,39 +30,44 @@ public class Fila {
     }
 
     /**
-     * Retorna a unidade quantum
-     * 
-     * @return int
-     */
-    public int getQuantum() {
-        return quantum;
-    }
-    
-    /**
-     * Retorna o tempo de vida
+     * Retorna processo ativo
      *
-     * @return int
+     * @return Processo
+     * @throws ProcessoInexistenteException Processo inexistente
      */
-    public int getTempoVida() {
-        return tempoVida;
+    public Processo getProcessoAtivo() throws ProcessoInexistenteException {
+        if (processoAtivo == null) {
+            throw new ProcessoInexistenteException();
+        }
+        return processoAtivo;
     }
 
     /**
-     * Retorna a quantidade de processos
+     * Adiciona novo processo na lista
      *
-     * @return int
+     * @param processo
      */
-    public int getQuantidadeProcessos() {
-        return quantidadeProcessos;
+    public void adiciona(Processo processo) {
+        if (processoAtivo == null) {
+            processos.add(processo);
+        } else {
+            processos.add(indexOf(processoAtivo), processo);
+        }
+        observable.forEach((obj) -> {
+            obj.process(processo);
+        });
+        processos.forEach((obj) -> {
+            obj.fireStatusChange();
+        });
     }
 
     /**
-     * Retorna a probabilidade de IO
+     * Remove processo da lista
      *
-     * @return double
+     * @param processo
      */
-    public double getProbabilidadeIO() {
-        return probabilidadeIO;
+    public void remove(Processo processo) {
+        processos.remove(processo);
     }
 
     /**
@@ -109,19 +80,49 @@ public class Fila {
     }
 
     /**
+     * Retorna a ocorrência do processo na fila
+     *
+     * @param processo
+     * @return int
+     */
+    public int indexOf(Processo processo) {
+        return processos.indexOf(processo);
+    }
+
+    /**
      * Retorna próximo processo da fila
      *
-     * @return Processo
+     * @throws ProcessoInexistenteException Processo inexistente
      */
-    public Processo getNextProcesso() {
+    public void nextProcesso() throws ProcessoInexistenteException {
         if (processos.isEmpty()) {
-            return null;
+            throw new ProcessoInexistenteException();
         }
-        ocorrenciaProcesso++;
+        if (processoAtivo == null) {
+            processoAtivo = processos.get(0);
+            return;
+        }
+        int ocorrenciaProcesso = indexOf(processoAtivo) + 1;
         if (ocorrenciaProcesso == processos.size()) {
             ocorrenciaProcesso = 0;
         }
-        return processos.get(ocorrenciaProcesso);
+        processoAtivo = processos.get(ocorrenciaProcesso);
+    }
+
+    /**
+     * Executa processo
+     *
+     * @param tempo
+     * @throws ProcessoInexistenteException Processo inexistente
+     */
+    public void executa(int tempo) throws ProcessoInexistenteException {
+        if (processoAtivo == null) {
+            nextProcesso();
+            if (processoAtivo == null) {
+                throw new ProcessoInexistenteException();
+            }
+        }
+        processoAtivo.executa(tempo);
     }
 
 }

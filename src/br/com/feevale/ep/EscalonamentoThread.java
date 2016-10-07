@@ -5,33 +5,41 @@ package br.com.feevale.ep;
  */
 public class EscalonamentoThread extends Thread {
 
-    /**
-     * Tempo de processamento
-     */
+    /** Tempo de processamento */
     private static final int TEMPO_PROCESSAMENTO = 100;
-    /**
-     * Fila de processos
-     */
-    private final Fila fila;
+    /** Fila de processos */
+    private final ExecutorFila executor;
+    /** Quantum */
+    private final int quantum;
 
-    public EscalonamentoThread(Fila fila) {
-        this.fila = fila;
+    public EscalonamentoThread(ExecutorFila executor, int quantum) {
+        this.executor = executor;
+        this.quantum = quantum;
         setDaemon(true);
     }
 
     /**
-     * Retorna próximo processo
-     *
-     * @return Processo
-     * @throws InterruptedException
+     * Executa escalonamento
+     * 
+     * @throws InterruptedException Processamento interrompido
+     * @throws ProcessoInexistenteException Processo inexistênte
      */
-    private Processo getNext() throws InterruptedException {
-        while (true) {
-            Processo processo = fila.getNextProcesso();
-            if (processo != null) {
-                return processo;
+    private void exec() throws InterruptedException, ProcessoInexistenteException {
+        int tempo = 0;
+        executor.inicia();
+        try {
+            while (true) {
+                Thread.sleep(TEMPO_PROCESSAMENTO);
+                tempo += TEMPO_PROCESSAMENTO;
+                executor.executa(TEMPO_PROCESSAMENTO);
+                // Se finalizou quantum
+                if (tempo >= quantum) {
+                    executor.finaliza();
+                    break;
+                }
             }
-            Thread.sleep(10);
+        } catch (ProcessamentoInterrompidoException e) {
+            executor.finaliza();
         }
     }
 
@@ -39,25 +47,10 @@ public class EscalonamentoThread extends Thread {
     public void run() {
         try {
             while (true) {
-                int tempo = 0;
-                Processo processo = getNext();
-                if (!processo.isCompleto()) {
-                    processo.inicia();
-                    while (true) {
-                        Thread.sleep(TEMPO_PROCESSAMENTO);
-                        tempo += TEMPO_PROCESSAMENTO;
-                        processo.executa(TEMPO_PROCESSAMENTO);
-                        // Se processo esta completo
-                        if (processo.isCompleto()) {
-                            processo.finaliza();
-                            break;
-                        }
-                        // Se finalizou quantum
-                        if (tempo >= fila.getQuantum()) {
-                            processo.aguarda();
-                            break;
-                        }
-                    }
+                try {
+                    exec();
+                } catch (ProcessoInexistenteException e) {
+                    Thread.sleep(50);
                 }
             }
         } catch (InterruptedException ex) {

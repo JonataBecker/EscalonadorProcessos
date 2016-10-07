@@ -1,20 +1,21 @@
 package br.com.feevale.ep;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Thread de criação de processos
  */
 public class CriacaoProcessoThread extends Thread {
 
-    /**
-     * Fila para criação de processos
-     */
+    /** Fila para criação de processos */
     private final Fila fila;
+    /** Tempo de vida máximo */
+    private final int tempoVida;
+    /** Probabilidade IO */
+    private final int probabilidadeIO;
 
-    public CriacaoProcessoThread(Fila fila) {
+    public CriacaoProcessoThread(Fila fila, int tempoVida, int probabilidadeIO) {
         this.fila = fila;
+        this.tempoVida = tempoVida;
+        this.probabilidadeIO = probabilidadeIO;
         setDaemon(true);
     }
 
@@ -22,8 +23,7 @@ public class CriacaoProcessoThread extends Thread {
     public void run() {
         try {
             while (true) {
-                fila.adicionaProcesso(ProcessoFactory.cria(fila));
-
+                fila.adiciona(ProcessoFactory.cria(tempoVida, probabilidadeIO));
                 Thread.sleep(2000);
             }
         } catch (InterruptedException ex) {

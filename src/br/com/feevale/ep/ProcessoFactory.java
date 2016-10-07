@@ -9,12 +9,14 @@ public class ProcessoFactory {
     
     /**
      * Cria processo conforme parâmetros
-     * @param fila
+     * 
+     * @param tempoVida 
+     * @param probabilidadeIO 
      * @return Processo criado
      */
-    public static synchronized Processo cria(Fila fila) {
-        int vida = (int) (Math.random() * fila.getTempoVida() + 1);
-        boolean ioBound = Math.random() < fila.getProbabilidadeIO();
+    public static synchronized Processo cria(int tempoVida, int probabilidadeIO) {
+        int vida = (int) (Math.random() * tempoVida + 1);
+        boolean ioBound = Math.random() < probabilidadeIO;
         return new Processo(lastPdi++, vida, ioBound);
     }
     

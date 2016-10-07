@@ -10,8 +10,10 @@ public class Escalonador {
 
     /** Lista de eventos de inicio de escalonamento */
     private final List<EscalonadorStartListener> observable;
-    /** Objeto responsável pelo controle da fila de escalonamento */
-    private Fila fila;
+    /** Objeto responsável pelo controle da fila de escalonamento de CPU */
+    private Fila filaCPU;
+    /** Objeto responsável pelo controle da fila de escalonamento de IO */
+    private Fila filaIO;
     /** Objeto responsável pela criação dos processos na fila */
     private Thread ct;
     /** Objeto responsável pelo escalonamento dos processos */
@@ -25,13 +27,14 @@ public class Escalonador {
      * Inicia escalonamento
      */
     public void start() {
-        fila = new Fila(1000, 10000, 240, 0.7);
+        filaCPU = new Fila();
+        filaIO = new Fila();
         observable.forEach((obj) -> {
-            obj.start(fila);
+            obj.start(filaCPU);
         });
-        ct = new CriacaoProcessoThread(fila);
+        ct = new CriacaoProcessoThread(filaCPU, 10000, 3);
         ct.start();
-        escalonador = new EscalonamentoThread(fila);
+        escalonador = new EscalonamentoThread(new ExecutorFilaCPU(filaCPU, filaIO), 1000);
         escalonador.start();
     }
 

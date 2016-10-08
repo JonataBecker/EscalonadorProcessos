@@ -57,7 +57,7 @@ public class ViewProcessos extends BorderPane {
      */
     private BorderPane buildView(String titulo, ViewFila view) {
         BorderPane pane = new BorderPane();
-        pane.setPrefWidth(160);
+        pane.setPrefWidth(172);
         pane.setStyle("-fx-background-color:#FFF");
         pane.setPadding(new Insets(5));
         Label label = new Label(titulo);

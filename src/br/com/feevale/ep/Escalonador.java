@@ -18,6 +18,8 @@ public class Escalonador {
     private Thread ct;
     /** Objeto responsável pelo escalonamento dos processos */
     private Thread escalonador;
+    /** Objeto responsável pelo escalonamento dos processos IO */
+    private Thread escalonadorIO;
     
     public Escalonador() {
         this.observable = new ArrayList<>();
@@ -37,10 +39,12 @@ public class Escalonador {
         observable.forEach((obj) -> {
             obj.start(filaCPU, filaIO);
         });
-        ct = new CriacaoProcessoThread(filaCPU, tempoVida, maxProcessos, probabilidadeIO);
+        ct = new CriacaoProcessoThread(filaCPU, tempoVida, maxProcessos);
         ct.start();
-        escalonador = new EscalonamentoThread(new ExecutorFilaCPU(filaCPU, filaIO), quantum);
+        escalonador = new EscalonamentoThread(new ExecutorFilaCPU(filaCPU, filaIO, quantum, probabilidadeIO), quantum);
         escalonador.start();
+        escalonadorIO = new EscalonamentoThread(new ExecutorFilaIO(filaCPU, filaIO), quantum);
+        escalonadorIO.start();
     }
 
     /**
@@ -58,5 +62,6 @@ public class Escalonador {
     public void interrupt() {
         ct.interrupt();
         escalonador.interrupt();
+        escalonadorIO.interrupt();
     }
 }

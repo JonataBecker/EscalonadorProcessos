@@ -51,7 +51,7 @@ public class ViewProcesso extends BorderPane {
         bar.setPrefWidth(150);
         setBottom(bar);
     }
-
+    
     /**
      * Inicializa eventos
      */
@@ -97,7 +97,13 @@ public class ViewProcesso extends BorderPane {
      * Define a cor do processo
      */
     private void setBarra() {
-        bar.setProgress((double) processo.getTempoProcessamento() / processo.getVida());
+        double value;
+        if (processo.isIO()) {
+            value = (double) processo.getTempoProcessamentoIO() / processo.getVidaIO();
+        } else {
+            value = (double) processo.getTempoProcessamento() / processo.getVida();
+        }
+        bar.setProgress(value);
     }
 
 }

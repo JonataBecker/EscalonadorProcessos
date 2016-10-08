@@ -65,7 +65,7 @@ public class ViewInformacao extends GridPane {
         // Tempo de vida máximo
         Label labelQuantidadeMaximaProcessos = new Label("Quantidade máxima de processos:");
         quantidadeMaximaProcessos = new NumericField();
-        quantidadeMaximaProcessos.setText("3");
+        quantidadeMaximaProcessos.setText("30");
         quantidadeMaximaProcessos.setTooltip(new Tooltip("Quantidade máxima de novos processos por minuto"));
         addNode(labelQuantidadeMaximaProcessos);
         addNode(quantidadeMaximaProcessos);

@@ -11,14 +11,11 @@ public class CriacaoProcessoThread extends Thread {
     private final int tempoVida;
     /** Quantidade máxima de processos por minuto */
     private final int maxProcessos;
-    /** Probabilidade IO */
-    private final double probabilidadeIO;
 
-    public CriacaoProcessoThread(Fila fila, int tempoVida, int maxProcessos, double probabilidadeIO) {
+    public CriacaoProcessoThread(Fila fila, int tempoVida, int maxProcessos) {
         this.fila = fila;
         this.tempoVida = tempoVida;
         this.maxProcessos = maxProcessos;
-        this.probabilidadeIO = probabilidadeIO;
         setDaemon(true);
     }
 
@@ -27,7 +24,7 @@ public class CriacaoProcessoThread extends Thread {
         try {
             int tempo = 60 * 1000 / maxProcessos;
             while (true) {
-                fila.adiciona(ProcessoFactory.cria(tempoVida, probabilidadeIO));
+                fila.adiciona(ProcessoFactory.cria(tempoVida));
                 Thread.sleep(tempo);
             }
         } catch (InterruptedException ex) {

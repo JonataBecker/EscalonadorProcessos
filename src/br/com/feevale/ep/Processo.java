@@ -8,6 +8,9 @@ import java.util.List;
  */
 public class Processo {
 
+    /** Tempo máximo de IO */
+    public static final int TEMPO_MAX_IO = 3000;
+
     /** Eventos do processo */
     private final List<ProcessoListener> observableStatus;
     /** Eventos de encerramento do processo */
@@ -18,29 +21,30 @@ public class Processo {
     private final int vida;
     /** Tempo de processamento */
     private int tempoProcessamento;
+    /** Vida total IO */
+    private int vidaIO;
+    /** Tempo de processamento IO */
+    private int tempoProcessamentoIO;
     /** Estado do processo */
     private ProcessoEstado estado;
-    /** Indica se é I/O-bound */
-    private final boolean ioBound;
 
-    public Processo(int pdi, int vida, boolean ioBound) {
+    public Processo(int pdi, int vida) {
         this.observableStatus = new ArrayList<>();
         this.observableClose = new ArrayList<>();
         this.pdi = pdi;
         this.vida = vida;
-        this.ioBound = ioBound;
         estado = ProcessoEstado.AGUARDANDO;
     }
 
     /**
      * Retorna o pdi do processo
-     * 
+     *
      * @return int
      */
     public int getPdi() {
         return pdi;
     }
-    
+
     /**
      * Retorna a vida total do processo
      *
@@ -60,6 +64,24 @@ public class Processo {
     }
 
     /**
+     * Retorna tempo IO
+     *
+     * @return int
+     */
+    public int getVidaIO() {
+        return vidaIO;
+    }
+
+    /**
+     * Retorna o tempo de processamento IO
+     *
+     * @return int
+     */
+    public int getTempoProcessamentoIO() {
+        return tempoProcessamentoIO;
+    }
+
+    /**
      * Retorna o estado do processo
      *
      * @return ProcessoEstado
@@ -70,14 +92,14 @@ public class Processo {
 
     /**
      * Define estado do processo
-     * 
-     * @param estado 
+     *
+     * @param estado
      */
     private void setEstado(ProcessoEstado estado) {
         this.estado = estado;
         fireStatusChange();
     }
-    
+
     /**
      * Inicia processamento
      */
@@ -98,7 +120,11 @@ public class Processo {
      * @param tempo
      */
     public void executa(int tempo) {
-        this.tempoProcessamento += tempo;
+        if (isProcessamento()) {
+            this.tempoProcessamento += tempo;
+        } else if (isIO()) {
+            this.tempoProcessamentoIO += tempo;
+        }
         fireStatusChange();
     }
 
@@ -112,6 +138,33 @@ public class Processo {
     }
 
     /**
+     * Retorna verdadeiro se processo IO esta completo
+     *
+     * @return boolean
+     */
+    public boolean isIOCompleto() {
+        return tempoProcessamentoIO >= vidaIO;
+    }
+
+    /**
+     * Retorna verdadeiro se processo esta em processamento
+     *
+     * @return boolean
+     */
+    public boolean isProcessamento() {
+        return estado.equals(ProcessoEstado.PROCESSANDO);
+    }
+
+    /**
+     * Retorna verdadeiro se processo esta em IO
+     *
+     * @return boolean
+     */
+    public boolean isIO() {
+        return estado.equals(ProcessoEstado.IO);
+    }
+
+    /**
      * Executa encerramento do processo
      */
     public void finaliza() {
@@ -122,10 +175,20 @@ public class Processo {
     }
 
     /**
+     * Executa encerramento do processo
+     * 
+     * @param vidaIO
+     */
+    public void setIO(int vidaIO) {
+        this.vidaIO = vidaIO;
+        setEstado(ProcessoEstado.IO);
+    }
+
+    /**
      * Dispara eventos de troca de status
      */
     public void fireStatusChange() {
-        observableStatus.forEach((obj) -> {
+        new ArrayList<>(observableStatus).forEach((obj) -> {
             obj.process(this);
         });
     }
@@ -150,7 +213,7 @@ public class Processo {
 
     @Override
     public String toString() {
-        return "Processo{" + "vida=" + vida + ", vidaRestante=" + tempoProcessamento + ", estado=" + estado + ", ioBound=" + ioBound + '}';
+        return "Processo{" + "vida=" + vida + ", vidaRestante=" + tempoProcessamento + ", estado=" + estado + '}';
     }
 
 }

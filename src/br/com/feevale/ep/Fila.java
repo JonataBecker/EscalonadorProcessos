@@ -10,6 +10,8 @@ public class Fila {
 
     /** Eventos de adição de processos */
     private final List<ProcessoListener> observable;
+    /** Eventos de remoção de processos */
+    private final List<ProcessoListener> observableRemove;
     /** Lista de processos */
     private final List<Processo> processos;
     /** Identificador do processo atual */
@@ -17,6 +19,7 @@ public class Fila {
 
     public Fila() {
         this.observable = new ArrayList<>();
+        this.observableRemove = new ArrayList<>();
         this.processos = new ArrayList<>();
     }
 
@@ -57,7 +60,7 @@ public class Fila {
         observable.forEach((obj) -> {
             obj.process(processo);
         });
-        processos.forEach((obj) -> {
+        getProcessos().forEach((obj) -> {
             obj.fireStatusChange();
         });
     }
@@ -69,6 +72,9 @@ public class Fila {
      */
     public void remove(Processo processo) {
         processos.remove(processo);
+        observableRemove.forEach((obj) -> {
+            obj.process(processo);
+        });
     }
 
     /**
@@ -78,6 +84,15 @@ public class Fila {
      */
     public void onAddProcess(ProcessoListener observer) {
         observable.add(observer);
+    }
+
+    /**
+     * Adiciona evento de remoção de processo
+     *
+     * @param observer
+     */
+    public void onRemoveProcess(ProcessoListener observer) {
+        observableRemove.add(observer);
     }
 
     /**
@@ -108,7 +123,7 @@ public class Fila {
             ocorrenciaProcesso = 0;
         }
         Processo process = processos.get(ocorrenciaProcesso);
-        processoAtivo = process.equals(processoAtivo) && processoAtivo.isCompleto() ? null : process;
+        processoAtivo = process.equals(processoAtivo) && !processoAtivo.isProcessamento() ? null : process;
     }
 
     /**

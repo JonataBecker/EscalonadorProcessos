@@ -123,7 +123,8 @@ public class Fila {
             ocorrenciaProcesso = 0;
         }
         Processo process = processos.get(ocorrenciaProcesso);
-        processoAtivo = process.equals(processoAtivo) && processoAtivo.isCompleto() ? null : process;
+        processoAtivo = process.equals(processoAtivo) &&
+                (processoAtivo.isCompleto() || processoAtivo.isIO()) ? null : process;
     }
 
     /**

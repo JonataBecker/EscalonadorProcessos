@@ -1,7 +1,9 @@
 package br.com.feevale.ep.ui;
 
 import br.com.feevale.ep.Fila;
+import br.com.feevale.ep.Processo;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -32,7 +34,17 @@ public class ViewFila extends FlowPane {
             Platform.runLater(() -> {
                 Pane pane = new BorderPane(new ViewProcesso(fila, processo));
                 pane.setPadding(new Insets(5));
-                getChildren().add(fila.getProcessos().indexOf(processo), pane);
+                pane.setUserData(processo);
+                int index = fila.indexOf(processo);
+                List n = getChildren().filtered((boxProcesso) -> {
+                    return !((Processo) boxProcesso.getUserData()).isCompleto();
+                });
+                if (n.isEmpty()) {
+                    index = 0;
+                } else if (n.size() > index) {
+                    index = getChildren().indexOf(n.get(index));
+                }
+                getChildren().add(index, pane);
                 processos.put(processo.getPdi(), pane);
             });
         });

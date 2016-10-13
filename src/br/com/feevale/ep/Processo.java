@@ -27,13 +27,16 @@ public class Processo {
     private int tempoProcessamentoIO;
     /** Estado do processo */
     private ProcessoEstado estado;
-
-    public Processo(int pdi, int vida) {
+    /** Indica se o processo permite IO */
+    private final boolean permiteIO;
+    
+    public Processo(int pdi, int vida, boolean permiteIO) {
         this.observableStatus = new ArrayList<>();
         this.observableClose = new ArrayList<>();
         this.pdi = pdi;
         this.vida = vida;
-        estado = ProcessoEstado.AGUARDANDO;
+        this.permiteIO = permiteIO;
+        this.estado = ProcessoEstado.AGUARDANDO;
     }
 
     /**
@@ -53,7 +56,16 @@ public class Processo {
     public int getVida() {
         return vida;
     }
-
+    
+    /**
+     * Retorna verdadeiro se processo permite IO
+     * 
+     * @return boolean
+     */
+    public boolean isPermiteIO() {
+        return permiteIO;
+    }
+    
     /**
      * Retorna o tempo de processamento
      *

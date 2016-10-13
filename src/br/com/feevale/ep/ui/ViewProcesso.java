@@ -19,7 +19,7 @@ public class ViewProcesso extends BorderPane {
     /** Detalhe do processo */
     private BorderPane pane;
     /** Sequência */
-    private Label sequencia;
+    private Label titulo;
     /** Pdi */
     private Label pdi;
     /** Barra de progresso */
@@ -41,8 +41,8 @@ public class ViewProcesso extends BorderPane {
      */
     private void initComponents() {
         pane = new BorderPane();
-        sequencia = new Label();
-        pane.setTop(sequencia);
+        titulo = new Label();
+        pane.setTop(titulo);
         pdi = new Label();
         pane.setCenter(pdi);
         setCenter(pane);
@@ -67,16 +67,22 @@ public class ViewProcesso extends BorderPane {
      * Atualiza informações do processo
      */
     private void atualiza() {
-        setSequencia();
+        setTitulo();
         setBarra();
         setCor();
     }
 
     /**
-     * Define a sequência do processo
+     * Define a título do processo
      */
-    private void setSequencia() {
-        sequencia.setText(String.valueOf(fila.getProcessos().indexOf(processo)));
+    private void setTitulo() {
+        int index = fila.indexOf(processo);
+        StringBuilder sb = new StringBuilder();
+        if (index >= 0) {
+            sb.append(index).append(" - ");
+        }
+        sb.append(processo.isPermiteIO() ? "IO-Bound" : "CPU-Bound");
+        titulo.setText(sb.toString());
     }
 
     /**
@@ -105,5 +111,12 @@ public class ViewProcesso extends BorderPane {
         }
         bar.setProgress(value);
     }
+
+    @Override
+    public String toString() {
+        return "ViewProcesso{" + "fila=" + fila + ", processo=" + processo + ", pane=" + pane + ", titulo=" + titulo + ", pdi=" + pdi + ", bar=" + bar + '}';
+    }
+    
+    
 
 }

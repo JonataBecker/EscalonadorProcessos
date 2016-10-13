@@ -46,7 +46,7 @@ public class ExecutorFilaCPU implements ExecutorFila {
             throw new ProcessamentoInterrompidoException();
         }
         // Se deve se passado processo para IO
-        if (isDefineIO(processo)) {
+        if (processo.isPermiteIO() && isDefineIO(processo)) {
             processo.setIO((int) (Math.random() * Processo.TEMPO_MAX_IO + 1));
             filaCPU.nextProcesso();
             filaCPU.remove(processo);

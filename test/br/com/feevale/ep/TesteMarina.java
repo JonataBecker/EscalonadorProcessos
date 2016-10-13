@@ -26,7 +26,7 @@ public class TesteMarina {
             }
 
         });
-        Thread ct = new CriacaoProcessoThread(fila, 10, 10);
+        Thread ct = new CriacaoProcessoThread(fila, 10, 10, 0.5);
 
         t.start();
         ct.start();

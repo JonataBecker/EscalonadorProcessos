@@ -30,7 +30,7 @@ public class Escalonador {
      * 
      * @param quantum
      * @param tempoVida
-     * @param maxProcessos
+     * @param maxProcessos 
      * @param probabilidadeIO
      */
     public void start(int quantum, int tempoVida, int maxProcessos, double probabilidadeIO) {
@@ -39,11 +39,15 @@ public class Escalonador {
         observable.forEach((obj) -> {
             obj.start(filaCPU, filaIO);
         });
-        ct = new CriacaoProcessoThread(filaCPU, tempoVida, maxProcessos);
+        ct = new CriacaoProcessoThread(filaCPU, tempoVida, maxProcessos, probabilidadeIO);
         ct.start();
-        escalonador = new EscalonamentoThread(new ExecutorFilaCPU(filaCPU, filaIO, quantum, probabilidadeIO), quantum);
+        // CPU
+        ExecutorFila executorCPU = new ExecutorFilaCPU(filaCPU, filaIO, quantum, probabilidadeIO);
+        escalonador = new EscalonamentoThread(executorCPU, quantum);
         escalonador.start();
-        escalonadorIO = new EscalonamentoThread(new ExecutorFilaIO(filaCPU, filaIO), quantum);
+        // IO
+        ExecutorFila executorIO = new ExecutorFilaIO(filaCPU, filaIO);
+        escalonadorIO = new EscalonamentoThread(executorIO, quantum);
         escalonadorIO.start();
     }
 

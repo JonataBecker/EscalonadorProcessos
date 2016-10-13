@@ -50,7 +50,7 @@ public class Fila {
      *
      * @param processo
      */
-    public void adiciona(Processo processo) {
+    public synchronized void adiciona(Processo processo) {
         if (processoAtivo == null) {
             processos.add(processo);
             processoAtivo = processo;
@@ -70,7 +70,7 @@ public class Fila {
      *
      * @param processo
      */
-    public void remove(Processo processo) {
+    public synchronized void remove(Processo processo) {
         processos.remove(processo);
         observableRemove.forEach((obj) -> {
             obj.process(processo);
@@ -110,7 +110,7 @@ public class Fila {
      *
      * @throws ProcessoInexistenteException Processo inexistente
      */
-    public void nextProcesso() throws ProcessoInexistenteException {
+    public synchronized void nextProcesso() throws ProcessoInexistenteException {
         if (processos.isEmpty()) {
             throw new ProcessoInexistenteException();
         }
@@ -123,7 +123,7 @@ public class Fila {
             ocorrenciaProcesso = 0;
         }
         Processo process = processos.get(ocorrenciaProcesso);
-        processoAtivo = process.equals(processoAtivo) && !processoAtivo.isProcessamento() ? null : process;
+        processoAtivo = process.equals(processoAtivo) && processoAtivo.isCompleto() ? null : process;
     }
 
     /**

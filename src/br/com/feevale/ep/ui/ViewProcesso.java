@@ -89,7 +89,7 @@ public class ViewProcesso extends BorderPane {
      * Define o pdi do processo
      */
     private void setPdi() {
-        pdi.setText("PDI: " + String.valueOf(processo.getPdi()));
+        pdi.setText("PID: " + String.valueOf(processo.getPdi()));
     }
 
     /**
